@@ -34,10 +34,10 @@ public class UserServiceApplication {
 		userService.saveRole(new Role(null, "ROLE_USER"));
 		userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
-		userService.saveUser(new User(null, "Jorix Sot", "jorix", "1234", new ArrayList<>()));
-		userService.saveUser(new User(null, "Jorix Admin", "jorixa", "1234", new ArrayList<>()));
+		userService.saveUser(new User(null, "Flutter User", "user", "1234", new ArrayList<>()));
+		userService.saveUser(new User(null, "Flutter Admin", "admin", "1234", new ArrayList<>()));
 
-		userService.addRoleToUser("jorix", "ROLE_USER");
-		userService.addRoleToUser("jorixa", "ROLE_ADMIN");
+		userService.addRoleToUser("user", "ROLE_USER");
+		userService.addRoleToUser("admin", "ROLE_ADMIN");
 	}
 }
