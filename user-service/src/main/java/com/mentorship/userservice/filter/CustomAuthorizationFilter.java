@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static java.util.Arrays.stream;
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 

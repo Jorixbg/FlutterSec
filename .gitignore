@@ -1,0 +1,15 @@
+
+user-service/.gradle/*
+user-service/.idea/*
+user-service/build/*
+Welcome-Login-Signup-Page-Flutter/.dart_tool/*
+*.bin
+*.class
+Welcome-Login-Signup-Page-Flutter/build/*
+Welcome-Login-Signup-Page-Flutter/.idea/*
+Welcome-Login-Signup-Page-Flutter/.idea/libraries/Dart_SDK.xml
+Welcome-Login-Signup-Page-Flutter/.idea/libraries/Flutter_Plugins.xml
+Welcome-Login-Signup-Page-Flutter/.idea/misc.xml
+Welcome-Login-Signup-Page-Flutter/.idea/modules.xml
+Welcome-Login-Signup-Page-Flutter/.idea/runConfigurations.xml
+Welcome-Login-Signup-Page-Flutter/.idea/vcs.xml
