@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../Content_Grid/content_grid.dart';
 import '../../Signup/signup_screen.dart';
+
+import 'package:http/http.dart' as http;
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -69,6 +74,7 @@ class _LoginFormState extends State<LoginForm> {
               tag: "login_btn",
               child: ElevatedButton(
                 onPressed: () {
+                  login(userNameController.text, passwordController.text);
                   if (userNameController.text == "admin" && passwordController.text == "admin") {
                     Navigator.push(
                       context,
@@ -115,5 +121,25 @@ class _LoginFormState extends State<LoginForm> {
 
     throw UnimplementedError();
   }
-  
+
+  Future<String> login(String username, String password) async {
+
+    final uri = Uri.parse('http://localhost:9003/login');
+    var map = new Map<String, dynamic>();
+    map['username'] = username;
+    map['password'] = password;
+
+    Response response = await http.post(
+      uri,
+      body: map
+    );
+
+    int statusCode = response.statusCode;
+    String? accessToken = response.headers["accesstoken"];
+    //JWT.decode(accessToken);
+    // Set JWT in session
+    print(accessToken);
+
+    return "";
+  }
 }
