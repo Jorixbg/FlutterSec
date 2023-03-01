@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
+import '../../../providers/auth.dart';
 import '../../Content_Grid/content_grid.dart';
 import '../../Signup/signup_screen.dart';
 
@@ -74,27 +76,29 @@ class _LoginFormState extends State<LoginForm> {
               tag: "login_btn",
               child: ElevatedButton(
                 onPressed: () {
-                  login(userNameController.text, passwordController.text);
-                  if (userNameController.text == "admin" && passwordController.text == "admin") {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return  ContentGrid();
-                        },
-                      ),
-                    );
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AlertDialog(
-                          content: Text(
-                              "I am sorry wrong password or username"),
-                        );
-                      },
-                    );
-                  }
+                  print('attempting login');
+                  //login(userNameController.text, passwordController.text);
+                  Provider.of<Auth>(context, listen: false).login(userNameController.text, passwordController.text);
+                  // if (userNameController.text == "admin" && passwordController.text == "admin") {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) {
+                  //         return  ContentGrid();
+                  //       },
+                  //     ),
+                  //   );
+                  // } else {
+                  //   showDialog(
+                  //     context: context,
+                  //     builder: (context) {
+                  //       return const AlertDialog(
+                  //         content: Text(
+                  //             "I am sorry wrong password or username"),
+                  //       );
+                  //     },
+                  //   );
+                  // }
                 },
                 child: Text(
                   "Login".toUpperCase(),
@@ -118,8 +122,6 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
-
-    throw UnimplementedError();
   }
 
   Future<String> login(String username, String password) async {
@@ -136,9 +138,12 @@ class _LoginFormState extends State<LoginForm> {
 
     int statusCode = response.statusCode;
     String? accessToken = response.headers["accesstoken"];
+    String? responsebody = response.body;
     //JWT.decode(accessToken);
     // Set JWT in session
+    print(statusCode);
     print(accessToken);
+    print(responsebody);
 
     return "";
   }
