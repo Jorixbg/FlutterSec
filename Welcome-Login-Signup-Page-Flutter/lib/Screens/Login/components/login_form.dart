@@ -75,30 +75,9 @@ class _LoginFormState extends State<LoginForm> {
             Hero(
               tag: "login_btn",
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print('attempting login');
-                  //login(userNameController.text, passwordController.text);
-                  Provider.of<Auth>(context, listen: false).login(userNameController.text, passwordController.text);
-                  // if (userNameController.text == "admin" && passwordController.text == "admin") {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) {
-                  //         return  ContentGrid();
-                  //       },
-                  //     ),
-                  //   );
-                  // } else {
-                  //   showDialog(
-                  //     context: context,
-                  //     builder: (context) {
-                  //       return const AlertDialog(
-                  //         content: Text(
-                  //             "I am sorry wrong password or username"),
-                  //       );
-                  //     },
-                  //   );
-                  // }
+                  await Provider.of<Auth>(context, listen: false).login(userNameController.text, passwordController.text);
                 },
                 child: Text(
                   "Login".toUpperCase(),
