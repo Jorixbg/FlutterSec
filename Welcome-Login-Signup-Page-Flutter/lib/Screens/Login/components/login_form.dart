@@ -78,7 +78,18 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () async {
                   print('attempting login');
                   await Provider.of<Auth>(context, listen: false).login(userNameController.text, passwordController.text);
-                },
+                  if (!Provider.of<Auth>(context, listen: false).isAuth) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const AlertDialog(
+                          content: Text(
+                              "I am sorry wrong password or username"),
+                        );
+                      },
+                    );
+                  }
+                  },
                 child: Text(
                   "Login".toUpperCase(),
                 ),

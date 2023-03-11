@@ -39,6 +39,10 @@ class Auth extends ChangeNotifier {
       print("called from provider");
       print(accessToken);
 
+      if (null == accessToken) {
+        return;
+      }
+
       Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken!);
       print(decodedToken);
       _roles = decodedToken['roles'];
