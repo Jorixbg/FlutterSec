@@ -79,15 +79,7 @@ class _LoginFormState extends State<LoginForm> {
                   print('attempting login');
                   await Provider.of<Auth>(context, listen: false).login(userNameController.text, passwordController.text);
                   if (!Provider.of<Auth>(context, listen: false).isAuth) {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const AlertDialog(
-                          content: Text(
-                              "I am sorry wrong password or username"),
-                        );
-                      },
-                    );
+                    showError(context);
                   }
                   },
                 child: Text(
@@ -112,6 +104,18 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
 
+  }
+
+  void showError(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const AlertDialog(
+          content: Text(
+              "I am sorry wrong password or username"),
+        );
+      },
+    );
   }
 
   Future<String> login(String username, String password) async {
