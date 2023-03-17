@@ -21,12 +21,14 @@ public class UserServiceApplication {
 	@Bean
 	CommandLineRunner run(UserService userService) {
 		return args -> {
+			// @Demo populate DB for demo purposes
 			populateUsers(userService);
 		};
 	}
 
 	@Bean
 	BCryptPasswordEncoder passwordEncoder() {
+		// @Demo password encoder implementation. Can be moved to a config class
 		return new BCryptPasswordEncoder();
 	}
 
