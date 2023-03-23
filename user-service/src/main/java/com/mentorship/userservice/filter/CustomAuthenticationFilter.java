@@ -35,6 +35,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        // @Demo authentication done here on login
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         log.info("Username is " + username);
@@ -46,6 +47,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) throws IOException, ServletException {
         User user = (User) auth.getPrincipal();
+        // @Demo "secret" is our demo signature. Should be stored in a secure vault
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes(StandardCharsets.UTF_8));
 
         String accessToken = JWT.create()
@@ -70,5 +72,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        // @ Demo if desired, can define unsuccessful authentication behavior below
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), "Wrong username/password");
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 }

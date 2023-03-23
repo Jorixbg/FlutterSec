@@ -24,6 +24,8 @@ import java.util.List;
 @Slf4j
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    // @ Demo this class implements Spring's UserDetailsService and can be used ass user storage
+
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;

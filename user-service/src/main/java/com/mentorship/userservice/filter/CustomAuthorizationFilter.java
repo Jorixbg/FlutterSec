@@ -28,11 +28,14 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if (request.getServletPath().equals("/login")) {
+            // @ Demo if not "/login" then exit
             filterChain.doFilter(request, response);
         }
         String authHeader = request.getHeader(AUTHORIZATION);
         if (authHeader != null && authHeader.startsWith(BEARER)) {
             String token = authHeader.substring(BEARER.length());
+
+            // @Demo check if the JWT is genuine using the secret
             Algorithm algorithm = Algorithm.HMAC256("secret".getBytes(StandardCharsets.UTF_8));
             JWTVerifier verifier = JWT.require(algorithm).build();
             DecodedJWT decodedJWT = verifier.verify(token);
@@ -42,6 +45,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             stream(roles).forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority(role));
             });
+
+            // Create authenticationToken and set it in the context so it is available
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

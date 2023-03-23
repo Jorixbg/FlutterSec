@@ -27,12 +27,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // @ Demo set user storage below
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        super.configure(http);
+        // @Demo Spring Security config
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/users/probe").permitAll();
@@ -41,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.authorizeHttpRequests().antMatchers(HttpMethod.GET, "/users/**").hasAnyAuthority("ROLE_USER");
         http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/users/save/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeHttpRequests().anyRequest().authenticated();
+
+        // @ Demo auth filters are defined below
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
