@@ -1,30 +1,36 @@
-import 'dart:convert';
 
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class Auth extends ChangeNotifier {
+  static const loginRoute = 'http://localhost:9003/login';
+
   late String _token;
   DateTime? _expiryDate;
   String? _userId;
   List<dynamic>? _roles;
 
   bool get isAuth {
-    return token != null;
+    if (token == null || token == '') {
+      return false;
+    }
+    return true;
   }
 
   String? get token {
-    if (_expiryDate != null
-        && _expiryDate!.isAfter(DateTime.now())
-        && _token != null) {
+    if (_expiryDate != null && _expiryDate!.isAfter(DateTime.now())
+        && _token != null && _token != '') {
       return _token;
     }
-    return null;
+    return '';
+  }
+
+  String? get role {
+    return _roles?.first;
   }
 
   Future<void> login(String username, String password) async {
-    final uri = Uri.parse('http://localhost:9003/login');
 
     var map = new Map<String, dynamic>();
     map['username'] = username;
@@ -32,7 +38,7 @@ class Auth extends ChangeNotifier {
 
     try {
       final response = await http.post(
-        uri,
+        Uri.parse(loginRoute),
         body: map,
       );
       String? accessToken = response.headers["accesstoken"];
@@ -41,10 +47,11 @@ class Auth extends ChangeNotifier {
 
       Map<String, dynamic> decodedToken = JwtDecoder.decode(accessToken!);
       print(decodedToken);
+      _token = accessToken;
       _roles = decodedToken['roles'];
       _expiryDate = DateTime.now().add(Duration(seconds: decodedToken['exp'],),);
-      _token = accessToken;
-      print(isAuth);
+      _userId = decodedToken['sub'];
+
       notifyListeners();
     }
     catch (error) {
@@ -52,18 +59,18 @@ class Auth extends ChangeNotifier {
     }
   }
 
-  Future<void> signup(String email, String password) async {
-    const url = 'https://someURL'; // add the url to the users service
+  String? get userId {
+    return _userId;
+  }
 
-    final response = await http.post(
-      Uri.parse(url),
-      body: json.encode({
-        'email': email,
-        'password': password,
-      }),
-    );
-    // print the token after a singup
-    print(json.decode(response.body));
-    String receivedAuthData = json.decode(response.body);
+  DateTime? get expiryDate {
+    return _expiryDate;
+  }
+
+  void logout() {
+    _token = '';
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
   }
 }
